@@ -26,13 +26,13 @@ public class Images {
         }
         return images;
     }
-    public Image[] loadNumberImages() {
+    public Image[] loadNumberImages(Color color) {
         Image[] numberImages = new Image[10];
         for (int i = 0; i < 10; i++) {
             BufferedImage numberImage = new BufferedImage
                     (Board.SQR_SIZE, Board.SQR_SIZE, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g = numberImage.createGraphics();
-            g.setColor(Color.BLACK);
+            g.setColor(color);
             int fontSize = 20;
             g.setFont(new Font("Arial", Font.PLAIN, fontSize));
 

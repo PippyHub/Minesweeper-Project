@@ -15,7 +15,7 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
     private final Game game;
     public Board() {
         images = img.loadImages();
-        imagesNum = img.loadNumberImages();
+        imagesNum = img.loadNumberImages(Color.BLACK);
         game = new Game(this);
         Game.addSquares();
         addMouseListener(this);
@@ -32,12 +32,14 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
         square(g);
     }
     public void menu(Graphics g) {
+        Image[] imagesNumWhite = img.loadNumberImages(Color.WHITE);
+
         g.setColor(new Color(74, 117, 44));
         g.fillRect(0, 0, BOARD_WIDTH, MENU_HEIGHT);
 
-        int imageSpacing = -20; // Adjust this spacing as needed
+        int imageSpacing = -20;
         int mainImageWidth = images[0].getWidth(this);
-        int digitWidth = imagesNum[0].getWidth(this);
+        int digitWidth = imagesNumWhite[0].getWidth(this);
         int totalWidth = mainImageWidth + digitWidth * 2 + imageSpacing;
 
         int centerX = (BOARD_WIDTH - totalWidth) / 2;
@@ -46,7 +48,7 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
 
         int secondImageX = centerX + mainImageWidth;
         int thirdImageX = secondImageX + digitWidth + imageSpacing;
-        int imageY = (MENU_HEIGHT - imagesNum[0].getHeight(this)) / 2;
+        int imageY = (MENU_HEIGHT - imagesNumWhite[0].getHeight(this)) / 2;
 
         int number = BOMB_AMOUNT - game.getFlagsPlaced();
         String numberStr = Integer.toString(number);
@@ -65,8 +67,8 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
         int digit1Int = Character.getNumericValue(digit1);
         int digit2Int = Character.getNumericValue(digit2);
 
-        g.drawImage(imagesNum[digit1Int], secondImageX, imageY, this);
-        g.drawImage(imagesNum[digit2Int], thirdImageX, imageY, this);
+        g.drawImage(imagesNumWhite[digit1Int], secondImageX, imageY, this);
+        g.drawImage(imagesNumWhite[digit2Int], thirdImageX, imageY, this);
     }
 
 
