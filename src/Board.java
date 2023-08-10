@@ -35,17 +35,20 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
         g.setColor(new Color(74, 117, 44));
         g.fillRect(0, 0, BOARD_WIDTH, MENU_HEIGHT);
 
-        int centerX = (BOARD_WIDTH - images[0].getWidth(this)) / 2;
+        int imageSpacing = -20; // Adjust this spacing as needed
+        int mainImageWidth = images[0].getWidth(this);
+        int digitWidth = imagesNum[0].getWidth(this);
+        int totalWidth = mainImageWidth + digitWidth * 2 + imageSpacing;
+
+        int centerX = (BOARD_WIDTH - totalWidth) / 2;
         int centerY = (MENU_HEIGHT - images[0].getHeight(this)) / 2;
         g.drawImage(images[0], centerX, centerY, this);
 
-        int imageSpacing = 0;
-        int secondImageX = centerX + images[0].getWidth(this) + imageSpacing;
-        int thirdImageX = secondImageX + imagesNum[1].getWidth(this) - 20;
+        int secondImageX = centerX + mainImageWidth;
+        int thirdImageX = secondImageX + digitWidth + imageSpacing;
         int imageY = (MENU_HEIGHT - imagesNum[0].getHeight(this)) / 2;
 
         int number = BOMB_AMOUNT - game.getFlagsPlaced();
-
         String numberStr = Integer.toString(number);
 
         char digit1;
@@ -65,6 +68,8 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
         g.drawImage(imagesNum[digit1Int], secondImageX, imageY, this);
         g.drawImage(imagesNum[digit2Int], thirdImageX, imageY, this);
     }
+
+
     public void background(Graphics g) {
         for (Square s : sq) {
             Color color;
