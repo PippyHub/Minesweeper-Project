@@ -130,9 +130,13 @@ public class Game {
     }
     public boolean winCondition() {
         for (Square s : Board.sq) {
-            return s.number != Square.Number.BOMB && s.click == Square.Click.CLICK && flagsPlaced == BOMB_AMOUNT;
+            if (s.number != Square.Number.BOMB ) {
+                if (s.click == Square.Click.NOT_CLICK) return false;
+            } else {
+                if (!s.flag) return false;
+            }
         }
-        return false;
+        return true;
     }
     public void mousePressed(MouseEvent e) {
         clickedSquare = Board.getSquare(e.getX(), e.getY());
