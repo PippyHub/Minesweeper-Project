@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ee4e036f-9786-447d-baf9-4bcc0d2a778d" name="Changes" comment="Text is white">
+    <list default="true" id="ee4e036f-9786-447d-baf9-4bcc0d2a778d" name="Changes" comment="Win condition completed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +114,14 @@
       <option name="project" value="LOCAL" />
       <updated>1691676023263</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Win condition completed">
+      <created>1691704718329</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1691704718329</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -138,6 +144,7 @@
     <MESSAGE value="Finished reveal algorithm" />
     <MESSAGE value="Added win and lose condition" />
     <MESSAGE value="Centered flag img" />
-    <option name="LAST_COMMIT_MESSAGE" value="Centered flag img" />
+    <MESSAGE value="Win condition completed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Win condition completed" />
   </component>
 </project>

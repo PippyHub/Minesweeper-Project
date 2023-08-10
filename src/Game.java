@@ -101,7 +101,6 @@ public class Game {
             s.click = Square.Click.NOT_CLICK;
             state = State.LOSE;
         }
-        if (winCondition()) state = State.WIN;
     }
     public void revealEmpty(Square square) {
         int[] dx = {-1, 0, 1, -1, 1, -1, 0, 1};
@@ -149,12 +148,14 @@ public class Game {
                     clickedSquare.flag = false;
                     flagsPlaced--;
                 }
+                if (winCondition()) state = State.WIN;
             } else if (!clickedSquare.flag) {
                 if (state == State.SPAWN) {
                     addBombs(clickedSquare);
                     addNumbers();
                 }
                 click(clickedSquare);
+                if (winCondition()) state = State.WIN;
             }
         }
         board.repaint();

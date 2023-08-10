@@ -7,7 +7,7 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
     static final int BOARD_WIDTH = SQR_SIZE * 24;
     static final int BOARD_HEIGHT = SQR_SIZE * 20;
     static final int MENU_HEIGHT = SQR_SIZE * 3;
-    static final int BOMB_AMOUNT = 99;
+    static final int BOMB_AMOUNT = 10;
     static LinkedList<Square> sq = new LinkedList<>();
     Images img = new Images();
     private final Image[] images;
@@ -70,8 +70,6 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
         g.drawImage(imagesNumWhite[digit1Int], secondImageX, imageY, this);
         g.drawImage(imagesNumWhite[digit2Int], thirdImageX, imageY, this);
     }
-
-
     public void background(Graphics g) {
         for (Square s : sq) {
             Color color;
