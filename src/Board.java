@@ -18,8 +18,6 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
         imagesNum = img.loadNumberImages();
         game = new Game(this);
         Game.addSquares();
-        Game.addBombs();
-        Game.addNumbers();
         addMouseListener(this);
         addMouseMotionListener(this);
     }
@@ -34,9 +32,38 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
         square(g);
     }
     public void menu(Graphics g) {
-        g.setColor(new Color(74,117,44));
-        g.fillRect(0,0,BOARD_WIDTH, MENU_HEIGHT);
-        g.drawImage(images[0],BOARD_WIDTH / 2 , MENU_HEIGHT / 2, this);
+        g.setColor(new Color(74, 117, 44));
+        g.fillRect(0, 0, BOARD_WIDTH, MENU_HEIGHT);
+
+        int centerX = (BOARD_WIDTH - images[0].getWidth(this)) / 2;
+        int centerY = (MENU_HEIGHT - images[0].getHeight(this)) / 2;
+        g.drawImage(images[0], centerX, centerY, this);
+
+        int imageSpacing = 0;
+        int secondImageX = centerX + images[0].getWidth(this) + imageSpacing;
+        int thirdImageX = secondImageX + imagesNum[1].getWidth(this) - 20;
+        int imageY = (MENU_HEIGHT - imagesNum[0].getHeight(this)) / 2;
+
+        int number = BOMB_AMOUNT - game.getFlagsPlaced();
+
+        String numberStr = Integer.toString(number);
+
+        char digit1;
+        char digit2;
+
+        if (number > 9) {
+            digit1 = numberStr.charAt(0);
+            digit2 = numberStr.charAt(1);
+        } else {
+            digit1 = '0';
+            digit2 = numberStr.charAt(0);
+        }
+
+        int digit1Int = Character.getNumericValue(digit1);
+        int digit2Int = Character.getNumericValue(digit2);
+
+        g.drawImage(imagesNum[digit1Int], secondImageX, imageY, this);
+        g.drawImage(imagesNum[digit2Int], thirdImageX, imageY, this);
     }
     public void background(Graphics g) {
         for (Square s : sq) {
@@ -68,17 +95,19 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
                 if (s.number != Square.Number.BOMB) {
                     int num;
                     switch (s.number) {
-                        case ONE -> num = 0;
-                        case TWO -> num = 1;
-                        case THREE -> num = 2;
-                        case FOUR -> num = 3;
-                        case FIVE -> num = 4;
-                        case SIX -> num = 5;
-                        case SEVEN -> num = 6;
-                        case EIGHT -> num = 7;
-                        default -> num = -1;
+                        case ONE -> num = 1;
+                        case TWO -> num = 2;
+                        case THREE -> num = 3;
+                        case FOUR -> num = 4;
+                        case FIVE -> num = 5;
+                        case SIX -> num = 6;
+                        case SEVEN -> num = 7;
+                        case EIGHT -> num = 8;
+                        default -> num = 0;
                     }
-                    g.drawImage(imagesNum[num], s.x, s.y, this);
+                    if (num > 0) {
+                        g.drawImage(imagesNum[num], s.x, s.y, this);
+                    }
                 }
             }
         }

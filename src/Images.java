@@ -6,10 +6,10 @@ import javax.imageio.ImageIO;
 public class Images {
     final int IMAGE_WIDTH = 500;
     final int IMAGE_NUMBER = 1;
-    final int SUB_IMAGE_SIZE = 500;
+    final int SUB_IMAGE_SIZE = IMAGE_WIDTH * IMAGE_NUMBER;
     private final Image[] images;
     public Images() {
-        images = new Image[3];
+        images = new Image[1];
     }
     public Image[] loadImages() {
         try {
@@ -27,8 +27,8 @@ public class Images {
         return images;
     }
     public Image[] loadNumberImages() {
-        Image[] numberImages = new Image[8];
-        for (int i = 0; i < 8; i++) {
+        Image[] numberImages = new Image[10];
+        for (int i = 0; i < 10; i++) {
             BufferedImage numberImage = new BufferedImage
                     (Board.SQR_SIZE, Board.SQR_SIZE, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g = numberImage.createGraphics();
@@ -36,7 +36,7 @@ public class Images {
             int fontSize = 20;
             g.setFont(new Font("Arial", Font.PLAIN, fontSize));
 
-            String numberText = String.valueOf(i + 1);
+            String numberText = String.valueOf(i);
             FontMetrics fontMetrics = g.getFontMetrics();
             int xCenter = (Board.SQR_SIZE - fontMetrics.stringWidth(numberText)) / 2;
             int yCenter = (Board.SQR_SIZE - fontMetrics.getHeight()) / 2 + fontMetrics.getAscent();
