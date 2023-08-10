@@ -73,8 +73,6 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
             } else {
                 color = (s.sX + s.sY) % 2 == 0 ? new Color(229, 194, 159) : new Color(215, 184, 153);
             }
-            if (s.number == Square.Number.BOMB && !game.lose) color = Color.magenta;
-            if (s.number == Square.Number.BOMB && game.lose) color = Color.red;
             g.setColor(color);
             g.fillRect(s.sX * SQR_SIZE, s.sY * SQR_SIZE, SQR_SIZE, SQR_SIZE);
         }
@@ -89,6 +87,10 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
     }
     public void square(Graphics g) {
         for (Square s : sq) {
+            /*if (s.number == Square.Number.BOMB) {
+                g.setColor(Color.magenta);
+                g.fillRect(s.sX * SQR_SIZE, s.sY * SQR_SIZE, SQR_SIZE, SQR_SIZE);
+            }*/
             if (s.flag) {
                 g.drawImage(images[0], s.x, s.y, this);
             } else if (s.click == Square.Click.CLICK) {
@@ -110,6 +112,13 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
                     }
                 }
             }
+            if (s.number == Square.Number.BOMB && game.state == Game.State.LOSE) {
+                g.setColor(Color.red);
+                int centerX = s.sX * SQR_SIZE + SQR_SIZE / 2;
+                int centerY = s.sY * SQR_SIZE + SQR_SIZE / 2;
+                int radius = SQR_SIZE / 4;
+                g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+            }
         }
     }
     public static Square getSquare(int x, int y) {
@@ -120,19 +129,22 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
         }
         return null;
     }
+    public boolean gameOver() {
+        return game.state != Game.State.LOSE && game.state != Game.State.WIN;
+    }
     @Override
     public void actionPerformed(ActionEvent e) {}
     @Override
     public void mousePressed(MouseEvent e) {
-        game.mousePressed(e);
+         if (gameOver()) game.mousePressed(e);
     }
     @Override
     public void mouseReleased(MouseEvent e) {
-        game.mouseReleased();
+        if (gameOver()) game.mouseReleased();
     }
     @Override
     public void mouseClicked(MouseEvent e) {
-        game.mouseClicked();
+        if (gameOver()) game.mouseClicked();
     }
     @Override
     public void mouseExited(MouseEvent e) {
@@ -144,7 +156,7 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
     }
     @Override
     public void mouseDragged(MouseEvent e) {
-        game.mouseDragged();
+        if (gameOver()) game.mouseDragged();
     }
     @Override
     public void mouseMoved(MouseEvent e) {

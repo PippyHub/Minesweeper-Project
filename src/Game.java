@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Game {
     enum State {
-        SPAWN, PLAY
+        SPAWN, PLAY, LOSE, WIN
     }
     State state = State.SPAWN;
     static final int SQR_SIZE = Board.SQR_SIZE;
@@ -15,7 +15,6 @@ public class Game {
     Board board;
     Square hoveredSquare, clickedSquare;
     private int flagsPlaced = 0;
-    boolean lose;
     public Game(Board board) {
         this.board = board;
     }
@@ -91,17 +90,20 @@ public class Game {
         return bombCount;
     }
     public void click(Square s) {
-        int sX = s.sX;
-        int sY = s.sY;
-
         if (s.click == Square.Click.NOT_CLICK) {
             s.click = Square.Click.CLICK;
-            revealEmpty(s);
+            if (s.number == Square.Number.ZERO) {
+                revealEmpty(s);
+            }
         }
-
-        if (s.number == Square.Number.BOMB) lose = true;
+        if (s.number == Square.Number.BOMB) {
+            removeFlags();
+            s.click = Square.Click.NOT_CLICK;
+            state = State.LOSE;
+        }
+        if (winCondition()) state = State.WIN;
     }
-    private void revealEmpty(Square square) {
+    public void revealEmpty(Square square) {
         int[] dx = {-1, 0, 1, -1, 1, -1, 0, 1};
         int[] dy = {-1, -1, -1, 0, 0, 1, 1, 1};
 
@@ -118,7 +120,20 @@ public class Game {
             }
         }
     }
-
+    public void removeFlags() {
+        for (Square s : Board.sq) {
+            if (s.number == Square.Number.BOMB && s.flag) {
+                s.flag = false;
+                flagsPlaced--;
+            }
+        }
+    }
+    public boolean winCondition() {
+        for (Square s : Board.sq) {
+            return s.number != Square.Number.BOMB && s.click == Square.Click.CLICK && flagsPlaced == BOMB_AMOUNT;
+        }
+        return false;
+    }
     public void mousePressed(MouseEvent e) {
         clickedSquare = Board.getSquare(e.getX(), e.getY());
         if (clickedSquare != null && clickedSquare.click == Square.Click.NOT_CLICK) {
