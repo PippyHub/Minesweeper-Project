@@ -27,4 +27,7 @@ public class Square {
     public void setHover(Hover hover) {
         this.hover = hover;
     }
+    public void setNumber(Number number) {
+        this.number = number;
+    }
 }

@@ -9,11 +9,9 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
     static final int MENU_HEIGHT = SQR_SIZE * 3;
     static final int BOMB_AMOUNT = 99;
     static LinkedList<Square> sq = new LinkedList<>();
-    static LinkedList<Bomb> bo = new LinkedList<>();
     Images img = new Images();
     private final Image[] images;
     private final Game game;
-
     public Board() {
         images = img.loadImages();
         game = new Game(this);
@@ -24,9 +22,6 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
     }
     public static void squareList(int sX, int sY) {
         new Square(sX, sY, sq);
-    }
-    public static void bombList(int bX, int bY) {
-        new Bomb(bX, bY, bo);
     }
     public void paint(Graphics g) {
         menu(g);
@@ -40,35 +35,21 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
         g.drawImage(images[0],BOARD_WIDTH / 2 , MENU_HEIGHT / 2, this);
     }
     public void background(Graphics g) {
-        boolean light = true;
-        for (int boardY = MENU_HEIGHT / SQR_SIZE; boardY < (MENU_HEIGHT + BOARD_HEIGHT) / SQR_SIZE; boardY++) {
-            for (int boardX = 0; boardX < BOARD_WIDTH / SQR_SIZE; boardX++) {
-                Square s = getSquare(boardX * SQR_SIZE, boardY *  SQR_SIZE);
-                if (s != null) {
-                    Color color;
-                    if (light) {
-                        color = switch (s.click) {
-                            case NOT_CLICK -> new Color(170, 215, 80);
-                            case CLICK -> new Color(229, 194, 159);
-                        };
-                    } else {
-                        color = switch (s.click) {
-                            case NOT_CLICK -> new Color(162, 209, 72);
-                            case CLICK -> new Color(215, 184, 153);
-                        };
-                    }
-                    g.setColor(color);
-                }
-                g.fillRect(boardX * SQR_SIZE, boardY * SQR_SIZE, SQR_SIZE, SQR_SIZE);
-                light = ! light;
+        for (Square s : sq) {
+            Color color;
+            if (s.click == Square.Click.NOT_CLICK) {
+                color = (s.sX + s.sY) % 2 == 0 ? new Color(170, 215, 80) : new Color(162, 209, 72);
+            } else {
+                color = (s.sX + s.sY) % 2 == 0 ? new Color(229, 194, 159) : new Color(215, 184, 153);
             }
-            light =! light;
+            g.setColor(color);
+            g.fillRect(s.sX * SQR_SIZE, s.sY * SQR_SIZE, SQR_SIZE, SQR_SIZE);
         }
     }
     public void highlight(Graphics g) {
         g.setColor(new Color(191,225,125));
         for (Square s : sq) {
-            if (s.hover == Square.Hover.HOVERED) {
+            if (s.hover == Square.Hover.HOVERED && s.click == Square.Click.NOT_CLICK) {
                 g.fillRect(s.sX * SQR_SIZE, s.sY * SQR_SIZE, SQR_SIZE, SQR_SIZE);
             }
         }
@@ -84,14 +65,6 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
         int sY = y / SQR_SIZE;
         for (Square s : sq) {
             if (s.sX == sX && s.sY == sY) return s;
-        }
-        return null;
-    }
-    public static Bomb getBomb(int x, int y) {
-        int sX = x / SQR_SIZE;
-        int sY = y / SQR_SIZE;
-        for (Bomb b : bo) {
-            if (b.bX == sX && b.bY == sY ) return b;
         }
         return null;
     }

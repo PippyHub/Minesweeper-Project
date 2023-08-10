@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.event.MouseEvent;
+import java.util.Random;
+
 public class Game {
     static final int SQR_SIZE = Board.SQR_SIZE;
     static final int BOARD_WIDTH = Board.BOARD_WIDTH;
@@ -19,17 +21,36 @@ public class Game {
         }
     }
     public static void addBombs() {
-        for (int i = 0; i < BOMB_AMOUNT; i ++) {
-            Board.bombList(0, 0);
+        Random random = new Random();
+        int bombsToSpawn = BOMB_AMOUNT;
+
+        while (bombsToSpawn > 0) {
+            int randomX = random.nextInt(BOARD_WIDTH / SQR_SIZE);
+            int randomY = random.nextInt((BOARD_HEIGHT + MENU_HEIGHT) / SQR_SIZE - MENU_HEIGHT / SQR_SIZE) + MENU_HEIGHT / SQR_SIZE;
+
+            Square s = Board.getSquare(randomX * SQR_SIZE, randomY * SQR_SIZE);
+            if (s != null && s.number != Square.Number.BOMB) {
+                s.setNumber(Square.Number.BOMB);
+                bombsToSpawn--;
+            }
         }
     }
+    public void click(Square s) {
+        int sX = s.sX;
+        int sY = s.sY;
+
+        s.click = Square.Click.CLICK;
+
+        if (s.number == Square.Number.BOMB) ;
+    }
+
     public void mousePressed(MouseEvent e) {
         clickedSquare = Board.getSquare(e.getX(), e.getY());
         if (clickedSquare != null) {
             if (SwingUtilities.isRightMouseButton(e)) {
                 clickedSquare.flag = !clickedSquare.flag;
             } else if (!clickedSquare.flag) {
-                clickedSquare.click = Square.Click.CLICK;
+                click(clickedSquare);
             }
         }
         board.repaint();
