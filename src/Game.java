@@ -10,6 +10,7 @@ public class Game {
     static final int BOMB_AMOUNT = Board.BOMB_AMOUNT;
     Board board;
     Square hoveredSquare, clickedSquare;
+    boolean lose;
     public Game(Board board) {
         this.board = board;
     }
@@ -35,18 +36,44 @@ public class Game {
             }
         }
     }
+    public static void addNumbers() {
+        for (Square s : Board.sq) {
+            if (s.number != Square.Number.BOMB) {
+                int bombCount = countAdjacentBombs(s);
+                if (bombCount > 0) {
+                    s.setNumber(Square.Number.values()[bombCount]);
+                }
+            }
+        }
+    }
+    private static int countAdjacentBombs(Square square) {
+        int bombCount = 0;
+        int[] dx = {-1, 0, 1, -1, 1, -1, 0, 1};
+        int[] dy = {-1, -1, -1, 0, 0, 1, 1, 1};
+
+        for (int i = 0; i < dx.length; i++) {
+            int adjX = square.sX + dx[i];
+            int adjY = square.sY + dy[i];
+
+            Square adjacentSquare = Board.getSquare(adjX * SQR_SIZE, adjY * SQR_SIZE);
+            if (adjacentSquare != null && adjacentSquare.number == Square.Number.BOMB) {
+                bombCount++;
+            }
+        }
+        return bombCount;
+    }
     public void click(Square s) {
         int sX = s.sX;
         int sY = s.sY;
 
         s.click = Square.Click.CLICK;
 
-        if (s.number == Square.Number.BOMB) ;
+        if (s.number == Square.Number.BOMB) lose = true;
     }
 
     public void mousePressed(MouseEvent e) {
         clickedSquare = Board.getSquare(e.getX(), e.getY());
-        if (clickedSquare != null) {
+        if (clickedSquare != null && clickedSquare.click == Square.Click.NOT_CLICK) {
             if (SwingUtilities.isRightMouseButton(e)) {
                 clickedSquare.flag = !clickedSquare.flag;
             } else if (!clickedSquare.flag) {

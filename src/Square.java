@@ -7,7 +7,7 @@ public class Square {
         NOT_CLICK, CLICK
     }
     enum Number {
-        BOMB, ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT
+        ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, BOMB
     }
     Hover hover = Hover.NORMAL;
     Click click = Click.NOT_CLICK;

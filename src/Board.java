@@ -11,18 +11,22 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
     static LinkedList<Square> sq = new LinkedList<>();
     Images img = new Images();
     private final Image[] images;
+    private final Image[] imagesNum;
     private final Game game;
     public Board() {
         images = img.loadImages();
+        imagesNum = img.loadNumberImages();
         game = new Game(this);
         Game.addSquares();
         Game.addBombs();
+        Game.addNumbers();
         addMouseListener(this);
         addMouseMotionListener(this);
     }
     public static void squareList(int sX, int sY) {
         new Square(sX, sY, sq);
     }
+    @Override
     public void paint(Graphics g) {
         menu(g);
         background(g);
@@ -42,6 +46,8 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
             } else {
                 color = (s.sX + s.sY) % 2 == 0 ? new Color(229, 194, 159) : new Color(215, 184, 153);
             }
+            if (s.number == Square.Number.BOMB && !game.lose) color = Color.magenta;
+            if (s.number == Square.Number.BOMB && game.lose) color = Color.red;
             g.setColor(color);
             g.fillRect(s.sX * SQR_SIZE, s.sY * SQR_SIZE, SQR_SIZE, SQR_SIZE);
         }
@@ -56,9 +62,26 @@ public class Board extends JPanel implements ActionListener, MouseListener, Mous
     }
     public void square(Graphics g) {
         for (Square s : sq) {
-            if (s.flag) g.drawImage(images[0], s.x, s.y, this);
+            if (s.flag) {
+                g.drawImage(images[0], s.x, s.y, this);
+            } else if (s.click == Square.Click.CLICK) {
+                if (s.number != Square.Number.BOMB) {
+                    int num;
+                    switch (s.number) {
+                        case ONE -> num = 0;
+                        case TWO -> num = 1;
+                        case THREE -> num = 2;
+                        case FOUR -> num = 3;
+                        case FIVE -> num = 4;
+                        case SIX -> num = 5;
+                        case SEVEN -> num = 6;
+                        case EIGHT -> num = 7;
+                        default -> num = -1;
+                    }
+                    g.drawImage(imagesNum[num], s.x, s.y, this);
+                }
+            }
         }
-
     }
     public static Square getSquare(int x, int y) {
         int sX = x / SQR_SIZE;

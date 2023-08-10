@@ -1,4 +1,4 @@
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -25,5 +25,26 @@ public class Images {
             e.printStackTrace();
         }
         return images;
+    }
+    public Image[] loadNumberImages() {
+        Image[] numberImages = new Image[8];
+        for (int i = 0; i < 8; i++) {
+            BufferedImage numberImage = new BufferedImage
+                    (Board.SQR_SIZE, Board.SQR_SIZE, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g = numberImage.createGraphics();
+            g.setColor(Color.BLACK);
+            int fontSize = 20;
+            g.setFont(new Font("Arial", Font.PLAIN, fontSize));
+
+            String numberText = String.valueOf(i + 1);
+            FontMetrics fontMetrics = g.getFontMetrics();
+            int xCenter = (Board.SQR_SIZE - fontMetrics.stringWidth(numberText)) / 2;
+            int yCenter = (Board.SQR_SIZE - fontMetrics.getHeight()) / 2 + fontMetrics.getAscent();
+
+            g.drawString(numberText, xCenter, yCenter);
+            g.dispose();
+            numberImages[i] = numberImage;
+        }
+        return numberImages;
     }
 }
